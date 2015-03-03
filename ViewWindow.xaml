@@ -1,0 +1,23 @@
+﻿<Window x:Class="Ajou_Notice.ViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ViewWindow" Height="600" Width="360" AllowsTransparency="True" WindowStyle="None" Background="Transparent">
+    <Grid Height="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="570"/>
+        </Grid.RowDefinitions>
+        <Image MouseLeftButtonDown="Image_MouseLeftButtonDown" Source="Images/ViewWindowImg/(0-0).png" Stretch="None" Grid.Row="0"/>
+        <Image Grid.Row="1" Source="Images/ViewWindowImg/(0-30).png" Stretch="None"/>
+        <Image MouseDown="clipImg_MouseDown" Name="clipImg" Margin="11,7,0,0" Source="Images/ViewWindowImg/(11-7).png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Image MouseDown="closeImg_MouseDown" Name="closeImg" Margin="0,7,8,0" Source="Images/ViewWindowImg/(336-7).png" Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        <Image MouseDown="miniImg_MouseDown" Name="miniImg" Margin="0,7,28,0" Source="Images/ViewWindowImg/(316-7).png" Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        <ScrollViewer Margin="1,1,0,0" Grid.Row="1" HorizontalAlignment="Left" Width="356" Height="550" VerticalAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel Name="stPanel">
+                <Label Name="noticeContext" Width="Auto" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Nanum Gothic" FontSize="11"/>
+            </StackPanel>
+        </ScrollViewer>
+        <Label Foreground="White" MouseLeftButtonDown="Image_MouseLeftButtonDown" Name="noticeContentTitle" Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Nanum Gothic" FontWeight="Bold" Grid.Column="1"/>
+    </Grid>
+</Window>
+   

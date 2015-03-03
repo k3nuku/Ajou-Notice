@@ -1,0 +1,350 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Ajou_Notice.MainWindow"
+        Loaded="Window_Loaded"  Title="MainWindow" Height="620" Width="380" AllowsTransparency="True" WindowStyle="None" Background="Transparent">
+    <Window.Resources>
+        <ControlTemplate x:Key="textBoxTemplate_noBorder" TargetType="{x:Type TextBoxBase}">
+            <Border x:Name="border" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="PasswordBoxTemplate_noBorder" TargetType="{x:Type PasswordBox}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image>
+                                <Image.Style>
+                                    <Style>
+                                        <Setter Property="Image.Source" 
+										Value="Images/cb.png" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked, 
+											RelativeSource={RelativeSource AncestorType=
+											{x:Type ToggleButton}}}" Value="True">
+                                                <Setter Property="Image.Source" 
+												Value="Images/cb_checked.png" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <ContentPresenter Content="{TemplateBinding Content}" 
+							Margin="5,0,0,0" />
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LoginButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FontFamily" Value="나눔고딕"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="InnerRectangle">
+                                                <EasingColorKeyFrame KeyTime="0" Value="#EEEEEE"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="InnerRectangle">
+                                                <EasingColorKeyFrame KeyTime="0" Value="#E6E6E6"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="OuterRectangle" Fill="#FFC0C0C0" RadiusY="1" RadiusX="1"/>
+                            <Rectangle x:Name="InnerRectangle" Margin="1" Fill="#FFF6F6F6" RadiusY="1" RadiusX="1"/>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Width="380" Height="620" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <!-- Background Shadow Content -->
+        <Image Source="Images/shadow1.png" Stretch="None" Visibility="Visible"/>
+        <StackPanel HorizontalAlignment="Center" Height="600" Width="360" VerticalAlignment="Center" Margin="10,9,10,11">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="26"/>
+                    <RowDefinition Height="438"/>
+                    <RowDefinition Height="52"/>
+                </Grid.RowDefinitions>
+
+                <!-- Background Image -->
+                <Image Grid.Row="0" Source="Images/0-0.png" Stretch="None" d:IsLocked="True" MouseLeftButtonDown="titlebar_MouseLeftButtonDown"/>
+                <Image Grid.Row="1" Source="Images/0-36.png" Stretch="None" d:IsLocked="True"/>
+                <Image Name="second_row_normal_tab" Grid.Row="2" Source="Images/0-84.png" Stretch="None" d:IsLocked="True"/>
+                <Image Grid.Row="3" Source="Images/0-110.png" Stretch="None" d:IsLocked="True"/>
+                <Image Name="end_row_enabled" Grid.Row="4" Source="Images/0-548.png" Stretch="None" d:IsLocked="True"/>
+
+                <Image Name="second_row_calendar_tab" Grid.Row="2" Source="Images/0-84(calendar).png" Stretch="None" Visibility="Hidden" d:IsLocked="True"/>
+                <Image Name="end_row_disabled" Grid.Row="4" Source="Images/0-548(calendar2).png" Stretch="None" Visibility="Hidden" d:IsLocked="True"/>
+
+                <!-- First Row Components -->
+                <Image Margin="14,12,0,0" Grid.Row="0" Source="Images/14-12.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" d:IsLocked="True" MouseLeftButtonDown="titlebar_MouseLeftButtonDown"/>
+                <Image Name="minimizeBtn" Margin="311,11,0,0" Grid.Row="0" Source="Images/311-11.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" d:IsLocked="True" MouseEnter="btnOpacityEvent_MouseEnter" MouseLeave="btnOpacityEvent_MouseLeave" MouseUp="minimizeButton_Click"/>
+                <Image Name="closeBtn" Margin="331,11,0,0" Grid.Row="0" Source="Images/331-11.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" d:IsLocked="True" MouseEnter="btnOpacityEvent_MouseEnter"  MouseLeave="btnOpacityEvent_MouseLeave" MouseUp="closeButton_Click"/>
+                <Label Name="usrName" Content="아직 로그인하지 않았습니다. " HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,65,0" FontFamily="Nanum Gothic" FontSize="11" MouseLeftButtonDown="titlebar_MouseLeftButtonDown" Foreground="#2C5E6D"/>
+
+                <!-- Second Row Components -->
+                <Image Name="ajou_btn_disabled" Margin="20,5,0,0" Grid.Row="1" Source="Images/20-41.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" MouseDown="ajou_btn_MouseUp" d:IsLocked="True"/>
+                <Image Name="eclass_btn_disabled" Margin="70,5,0,0" Grid.Row="1" Source="Images/70-41.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" MouseDown="eclass_btn_MouseUp" d:IsLocked="True"/>
+                <Image Name="calendar_btn_disabled" Margin="120,5,0,0" Grid.Row="1" Source="Images/120-41.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" MouseDown="calendar_btn_MouseUp" d:IsLocked="True"/>
+                <Image Name="settings_btn_disabled" Margin="320,3,0,0" Grid.Row="1" Source="Images/320-39.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" MouseDown="settings_btn_MouseUp" d:IsLocked="True"/>
+                <Image Name="ajou_btn_enabled" Margin="20,5,0,0" Grid.Row="1" Source="Images/20-41(select).png" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Visibility="Visible"/>
+                <Image Name="eclass_btn_enabled" Margin="70,5,0,0" Grid.Row="1" Source="Images/70-41(select).png" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Visibility="Hidden"/>
+                <Image Name="calendar_btn_enabled" Margin="120,5,0,0" Grid.Row="1" Source="Images/120-41(select).png" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Visibility="Hidden"/>
+                <Image Name="settings_btn_enabled" Margin="320,3,0,0" Grid.Row="1" Source="Images/320-39(select).png" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Visibility="Hidden"/>
+
+                <!-- Third Row Components -->
+                <Label MouseDown="row3_fstLabel_MouseDown" Name="row3_fstLabel" Content="분류" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.795,4.808" Margin="9,2,0,0" Grid.Row="2" FontFamily="NanumGothic" Foreground="White" FontSize="11"/>
+                <Label Name="row3_secLabel" Content="마감" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.795,4.808" Margin="311,2,0,0" Grid.Row="2" FontFamily="NanumGothic" Foreground="White" FontSize="11"/>
+
+                <!-- Fourth Row Components (Content Area) -->
+                <StackPanel Name="ajou_tab" HorizontalAlignment="Left" Height="438" VerticalAlignment="Top" Width="360" Grid.Row="3" Visibility="Visible">
+                    <Grid Height="438">
+                        <StackPanel Name="ajou_tab_panel_total" Height="438" Visibility="Visible">
+                            <!-- Total Notice Panel -->
+                            <ScrollViewer HorizontalAlignment="Left" Height="438" VerticalAlignment="Top" Width="360" VerticalScrollBarVisibility="Hidden">
+                                <Grid Name="ajou_tab_grid" Height="Auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="45"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="Images/now_loading_main.png" Grid.Column="0" Grid.ColumnSpan="3" Stretch="Fill"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </StackPanel>
+                        <StackPanel Name="ajou_tab_panel_custom" Height="438" Visibility="Hidden">
+                            <!-- Custom Notice Panel -->
+                            <ScrollViewer HorizontalAlignment="Left" Height="438" VerticalAlignment="Top" Width="360" VerticalScrollBarVisibility="Hidden">
+                                <Grid Name="ajou_tab_grid_custom" Height="Auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="45"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="Images/now_loading_main.png" Grid.Column="0" Grid.ColumnSpan="3" Stretch="Fill"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Name="eclass_tab" HorizontalAlignment="Left" Height="438" Width="360" VerticalAlignment="Top" Grid.Row="3" Visibility="Hidden">
+                    <Grid Height="438">
+                        <StackPanel Name="eclass_tab_panel_notice" Height="438" Visibility="Visible">
+                            <!-- eclass Notice Panel -->
+                            <ScrollViewer HorizontalAlignment="Left" Height="438" VerticalAlignment="Top" Width="360" VerticalScrollBarVisibility="Hidden">
+                                <Grid Name="eclass_tab_grid_notice" Height="Auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="290"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Name="eclass_notice_notLoaded" Content="로그인이 필요한 서비스입니다." Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </StackPanel>
+                        <StackPanel Name="eclass_tab_panel_lecturenote" Height="438" Visibility="Hidden">
+                            <!-- eclass Lecture Note Panel -->
+                            <ScrollViewer HorizontalAlignment="Left" Height="438" VerticalAlignment="Top" Width="360" VerticalScrollBarVisibility="Hidden">
+                                <Grid Name="eclass_tab_grid_lecturenote" Height="Auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="290"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Name="eclass_lecturenote_notLoaded" Content="로그인이 필요한 서비스입니다." Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </StackPanel>
+                        <StackPanel Name="eclass_tab_panel_assignment" Height="438" Visibility="Hidden">
+                            <!-- eclass Assignment Panel -->
+                            <ScrollViewer HorizontalAlignment="Left" Height="438" VerticalAlignment="Top" Width="360" VerticalScrollBarVisibility="Hidden">
+                                <Grid Name="eclass_tab_grid_assignment" Height="Auto">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="225"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Name="eclass_assignment_notLoaded" Content="로그인이 필요한 서비스입니다." Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Name="calendar_tab" HorizontalAlignment="Left" Height="438" Width="360" VerticalAlignment="Top" Grid.Row="3" Visibility="Hidden">
+                    <Grid Name="calendar_main_grid" Height="438">
+                    </Grid>
+                </StackPanel>
+
+                <!--110px-->
+                <StackPanel Name="settings_tab" HorizontalAlignment="Left" Height="438" Width="360" VerticalAlignment="Top" Grid.Row="3" Visibility="Hidden">
+                    <Grid Height="438">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="24"/>
+                            <RowDefinition Height="90"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="24"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="62"/>
+                            <ColumnDefinition Width="236"/>
+                            <ColumnDefinition Width="62"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="Images/0-110(settings).png" Stretch="None" Grid.ColumnSpan="3" Grid.RowSpan="7"/>
+                        <Label Content="포탈 계정" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="NanumGothic" FontSize="12.5" Grid.Column="1" Grid.Row="1" Height="24" Width="60"/>
+                        <Label Content="갱신 및 알림 설정" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="NanumGothic" FontSize="12.5" Height="24" Grid.Row="4" Grid.Column="1"/>
+
+                        <StackPanel Name="settings_tab_beforeLogon_panel" Visibility="Visible" Grid.Column="1" Grid.Row="2" Height="90">
+                            <Grid Height="90" Width="236">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="8"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="4"/>
+                                    <RowDefinition Height="26"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="14"/>
+                                    <ColumnDefinition Width="148"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="48"/>
+                                    <ColumnDefinition Width="10"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="Images/id, pw(72-158).png" Stretch="Fill" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+                                <TextBox Name="id_txtBox" VerticalContentAlignment="Center" Padding="5,0,0,0" Text="" HorizontalAlignment="Center" Height="26" TextWrapping="NoWrap" VerticalAlignment="Center" Width="158" Grid.Column="1" Grid.Row="1" FontFamily="NanumGothic" Template="{DynamicResource textBoxTemplate_noBorder}" Margin="2,1" Grid.ColumnSpan="2"/>
+                                <PasswordBox Name="pw_pwBox" VerticalContentAlignment="Center" Padding="5,0,0,0" HorizontalAlignment="Center" Height="26" VerticalAlignment="Center" Width="158" Grid.Column="1" Grid.Row="2" FontFamily="NanumGothic" Template="{DynamicResource PasswordBoxTemplate_noBorder}" Margin="2,1" Grid.ColumnSpan="2"/>
+
+                                <Button Name="loginBtn" Click="loginBtn_Click" Content="로그인" Style="{DynamicResource LoginButtonStyle}" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2"/>
+
+                                <ToggleButton VerticalAlignment="Top" Name="autoLogin_ToggleButton" Foreground="White" Width="14" Height="14" Grid.Column="1" Grid.Row="4" Style="{DynamicResource ToggleButtonStyle}"/>
+                                <Label Content="자동 로그인" VerticalAlignment="Top" Grid.Column="2" Grid.Row="3" FontSize="11" FontFamily="NanumGothic" Grid.RowSpan="2"/>
+                            </Grid>
+                        </StackPanel>
+                        <!-- Height : 158px -->
+                        <StackPanel Name="settings_tab_afterLogon_panel" Visibility="Hidden" Grid.Column="1" Grid.Row="2" Height="90">
+                            <Grid Height="90" Width="236">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="2"/>
+                                    <ColumnDefinition Width="212"/>
+                                    <ColumnDefinition Width="12"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="4"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="14"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="14"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Name="settings_tab_afterLogin_name" Content="유동균" Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" FontFamily="Nanum Gothic" Margin="2,1,0,0" Height="29" Width="58"/>
+                                <Label Name="settings_tab_afterLogin_college" Content="정보컴퓨터공학전공(과)" Grid.Column="2" Margin="1,21,0,0" HorizontalAlignment="Left" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" FontSize="11"/>
+
+                                <Button Name="logoutBtn" Click="logoutBtn_Click" Content="로그아웃" Width="64" Style="{DynamicResource LoginButtonStyle}" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right"/>
+
+                                <Image Grid.Column="1" Grid.Row="3" Source="Images/콤보박스1(72-206).png" VerticalAlignment="Top" Margin="0,4,0,0" Grid.RowSpan="2" HorizontalAlignment="Left" Stretch="None" Grid.ColumnSpan="2"/>
+                                <Label Name="settings_tab_afterLogin_userNum" Content="201420891" Grid.Row="3" Grid.Column="2" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Nanum Gothic"/>
+                            </Grid>
+                        </StackPanel>
+                        <Image Grid.ColumnSpan="3" Margin="20,13,17,38" Grid.Row="3" Source="notimployed.PNG" Stretch="Fill" Grid.RowSpan="3"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Fifth Row Components (Footer Area) -->
+                <StackPanel Name="fifth_row" HorizontalAlignment="Left" Height="52" Width="360" VerticalAlignment="Top" Grid.Row="4">
+                    <Grid Height="52">
+                        <StackPanel Name="footer_tab_ajou" Visibility="Visible">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="12"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="12"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Name="footerSelectionLeftHighlighted" Grid.Row="1" Grid.Column="1" Source="Images/50-560(1).png" Stretch="None" Grid.ColumnSpan="2"/>
+                                <Image Name="footerSelectionRightHighlighted" Grid.Row="1" Grid.Column="1" Source="Images/50-560(2).png" Stretch="None" Grid.ColumnSpan="2" Visibility="Hidden"/>
+                                <Label Name="footerSelectionLeftFont" Content="공통" Grid.Row="1" Grid.Column="1" Height="26" Foreground="#FF2D7B93" FontFamily="NanumGothic" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Label Name="footerSelectionRightFont" Content="정보컴퓨터공학과" Grid.Row="1" Grid.Column="2" Height="26" Foreground="#FFE7F9FF" FontFamily="NanumGothic" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Image Name="footerSelectionLeftBtn" Grid.Column="1" Grid.Row="1" Source="Images/50,180-560(btnarea)(width130).png" Stretch="None" MouseDown="footerSelectionLeftBtn_MouseUp"/>
+                                <Image Name="footerSelectionRightBtn" Grid.Column="2" Grid.Row="1" Source="Images/50,180-560(btnarea)(width130).png" Stretch="None" MouseDown="footerSelectionRightBtn_MouseUp"/>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Name="footer_tab_eclass" Visibility="Hidden">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="12"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="12"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="87"/>
+                                    <ColumnDefinition Width="86"/>
+                                    <ColumnDefinition Width="87"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Name="footerSelectionLeftHighlighted_eclass" Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="1" Source="Images/50-560(L).png" Stretch="None"/>
+                                <Image Name="footerSelectionCenterHighlighted_eclass" Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="1" Source="Images/50-560(C).png" Stretch="None" Visibility="Hidden"/>
+                                <Image Name="footerSelectionRightHighlighted_eclass" Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="1" Source="Images/50-560(R).png" Stretch="None" Visibility="Hidden"/>
+                                <Label Name="footerSelectionLeftFont_eclass" Content="공지사항" Foreground="#FF2D7B93" FontFamily="NanumGothic" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="26" Margin="14,1,15,1" Width="58"/>
+                                <Label Name="footerSelectionCenterFont_eclass" Content="강의노트" Foreground="#FFE7F9FF" FontFamily="NanumGothic" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="26" Margin="15,1,13,1" Width="58"/>
+                                <Label Name="footerSelectionRightFont_eclass" Content="과제" Foreground="#FFE7F9FF" FontFamily="NanumGothic" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="26" Margin="27,1,26,1" Width="34"/>
+                                <Image Name="footerSelectionLeftBtn_eclass" Grid.Column="1" Grid.Row="1" Source="Images/50,137,224-560(버튼영역)(width86).png" Stretch="None" MouseDown="footerSelectionLeftBtn_eclass_MouseDown"/>
+                                <Image Name="footerSelectionCenterBtn_eclass" Grid.Column="2" Grid.Row="1" Source="Images/50,137,224-560(버튼영역)(width86).png" Stretch="None" MouseDown="footerSelectionCenterBtn_eclass_MouseDown"/>
+                                <Image Name="footerSelectionRightBtn_eclass" Grid.Column="3" Grid.Row="1" Source="Images/50,137,224-560(버튼영역)(width86).png" Stretch="None" MouseDown="footerSelectionRightBtn_eclass_MouseDown"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                <!-- 스택패널 하단 마진 값 = 438-(과목수 * 25) -->
+                <StackPanel Visibility="Hidden" Name="category_selector_panel" Width="Auto" Height="Auto" Grid.Row="3" Margin="20,0,260,363" Background="White">
+                    <Border BorderBrush="Black" BorderThickness="1,1,1,1">
+                        <Grid Name="category_selector_grid" Width="Auto" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        </Grid>
+                    </Border>
+                </StackPanel>
+                <!-- End of Contents -->
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>
